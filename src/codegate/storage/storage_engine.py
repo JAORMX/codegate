@@ -4,7 +4,7 @@ import sqlite3
 from typing import List
 
 import numpy as np
-import sqlite_vec
+import sqlite_vec_sl_tmp
 import structlog
 
 from codegate.config import Config
@@ -62,7 +62,7 @@ class StorageEngine:
         try:
             conn = sqlite3.connect(self.db_path)
             conn.enable_load_extension(True)
-            sqlite_vec.load(conn)
+            sqlite_vec_sl_tmp.load(conn)
             conn.enable_load_extension(False)
             return conn
         except Exception as e:
@@ -200,14 +200,15 @@ class StorageEngine:
 
             # Log the raw SQL results
             rows = cursor.fetchall()
-            logger.debug(
-                "Raw SQL results",
-                row_count=len(rows),
-                rows=[
-                    {"name": row[0], "type": row[1], "status": row[2], "description": row[3]}
-                    for row in rows
-                ],
-            )
+            # Uncomment the following lines to log
+            # logger.debug(
+            #     "Raw SQL results",
+            #     row_count=len(rows),
+            #     rows=[
+            #         {"name": row[0], "type": row[1], "status": row[2], "description": row[3]}
+            #         for row in rows
+            #     ],
+            # )
 
             results = []
             query_words = None
